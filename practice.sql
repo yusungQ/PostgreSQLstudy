@@ -30,3 +30,49 @@ INSERT INTO weniv_product (id, name, cost) VALUES
 
 update weniv_product 
 set cost = cost + 100
+
+select 
+    u.country,
+    count(o.order_id) as total_order_count
+from orders o 
+join users u on o.user_id = u.id
+group by u.country
+order by total_order_count desc
+
+select 
+	country ,
+	count(o.order_id)
+from users u 
+join orders o on u.id = o.order_id 
+group by country 
+order by count(o.order_id) desc
+
+
+
+
+select 
+    id,
+    user_id,
+    city,
+    state ,
+    postal_code ,
+    browser, 
+    traffic_source,
+    event_type
+from events
+where user_id in (
+    select 
+        user_id
+    from events
+    where event_type = 'purchase'
+    group by user_id
+    having count(id) >= 10
+)
+order by user_id
+
+
+
+
+CREATE DATABASE sample_db;
+
+
